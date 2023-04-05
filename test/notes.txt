@@ -1,0 +1,33 @@
+sudo sysctl -w net.ipv4.ip_forward=1
+sudo systemctl restart systemd-networkd
+sudo systemctl start docker
+
+Onceoff:
+    cd ~/tmp/work/particl/particl-desktop/test
+    docker compose build
+
+    docker network create pdtest_network --subnet="172.16.238.0/24"
+
+
+    Requires particl core binaries at ~/tmp/particl-23.0.3.0/bin/
+        Or set PARTICL_CLIDIR to location
+
+# Reset tests
+sudo rm -r /tmp/pdtests
+
+mkdir -p /tmp/pdtests/{node1,node2}/.config/particl-desktop-testing/settings/
+mkdir -p /tmp/pdtests/{node1,node2}/.particl
+cp particl-core.json /tmp/pdtests/node1/.config/particl-desktop-testing/settings/particl-core.json
+cp particl-core.json /tmp/pdtests/node2/.config/particl-desktop-testing/settings/particl-core.json
+cp particl.conf /tmp/pdtests/node1/.particl/
+cp particl.conf /tmp/pdtests/node2/.particl/
+mkdir -p /tmp/pdtests/{node1,node2}/.config/particl-desktop-testing/binaries/particl/
+cp ~/tmp/particl-23.0.3.0_nousb-x86_64-linux-gnu.tar.gz /tmp/pdtests/node1/.config/particl-desktop-testing/binaries/particl/
+cp ~/tmp/particl-23.0.3.0_nousb-x86_64-linux-gnu.tar.gz /tmp/pdtests/node2/.config/particl-desktop-testing/binaries/particl/
+sudo chmod 777 -R /tmp/pdtests/{node1,node2}
+
+xhost +
+docker compose up
+
+
+python ./test/test_client.py

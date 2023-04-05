@@ -1,0 +1,69 @@
+version: '3.4'
+
+services:
+    pd1:
+        image: particldesktoptests
+        stop_grace_period: 5m
+        build:
+            context: ../
+            dockerfile: Dockerfile.test
+        security_opt:
+            - seccomp:chrome.json
+        environment:
+            - DISPLAY
+        volumes:
+            - /tmp/pdtests/node1:/home/node
+            - /tmp/.X11-unix:/tmp/.X11-unix
+        ports:
+            - 11939:11938
+            - 51937:51835
+            - 8001:8000
+        expose:
+            - 11938
+            - 51835
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "10m"
+                max-file: "5"
+        networks:
+            default:
+                ipv4_address: 172.16.238.11
+
+    pd2:
+        image: particldesktoptests
+        stop_grace_period: 5m
+        build:
+            context: ../
+            dockerfile: Dockerfile.test
+        security_opt:
+            - seccomp:chrome.json
+        environment:
+            - DISPLAY
+        volumes:
+            - /tmp/pdtests/node2:/home/node
+            - /tmp/.X11-unix:/tmp/.X11-unix
+        ports:
+            - 11940:11938
+            - 51938:51835
+            - 8002:8000
+        expose:
+            - 11938
+            - 51835
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "10m"
+                max-file: "5"
+        networks:
+            default:
+                ipv4_address: 172.16.238.12
+
+networks:
+    default:
+        name: pdtest_network
+
+volumes:
+    coindata:
+        driver: local
+

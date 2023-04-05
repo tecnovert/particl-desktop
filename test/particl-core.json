@@ -1,0 +1,46 @@
+{
+	"startup": {
+		"autoStart": true,
+		"startNewInstance": true,
+		"autoUpdate": true,
+		"url": "https://raw.githubusercontent.com/particl/particl-desktop/dev/modules/particl-core/clientBinaries.json",
+		"downloadTimeout": 600
+	},
+	"proxy": {
+		"enabled": false,
+		"url": "http://127.0.0.1:9050"
+	},
+	"authentication": {
+		"useCookie": true,
+		"rpcUser": "",
+		"rpcPass": ""
+	},
+	"network": {
+		"mainnet": false,
+		"testnet": false,
+		"regtest": true
+	},
+	"regtest": {
+		"zmqPort": 36850,
+		"zmqHost": "127.0.0.1",
+		"corePort": 51835,
+		"coreHost": "127.0.0.1"
+	},
+	"testnet": {
+		"zmqPort": 36950,
+		"zmqHost": "127.0.0.1",
+		"corePort": 51935,
+		"coreHost": "127.0.0.1"
+	},
+	"mainnet": {
+		"zmqPort": 36750,
+		"zmqHost": "127.0.0.1",
+		"corePort": 51735,
+		"coreHost": "127.0.0.1"
+	},
+	"verification": {
+		"binaryName": "particld",
+		"versionArg": "-version",
+		"outputVersionPrefix": "Particl Core version"
+	}
+}

@@ -52,3 +52,5 @@ yarn-error.log
 
 # environment config
 /build/**/.env
+
+report*.json
