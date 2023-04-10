@@ -730,15 +730,11 @@ WebDriverWait(self.remote_app, 10).until(EC.element_to_be_clickable((By.XPATH, "
 cards = self.remote_app.find_elements(By.XPATH, "//mat-expansion-panel-header[contains(@class,'header')]")
 for card in cards:
     inner_html = card.get_attribute('innerHTML')
-    self.output += '    ' + inner_html
-
     if '{order_hash}' in inner_html:
-        self.output += '    click'
         card.click()
         break
     '''
     result = server.run_exec(code)
-    print('result', result)
 
     print('Waiting 1 second')
     time.sleep(1)

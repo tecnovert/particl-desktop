@@ -8,29 +8,39 @@ ARG USER=node
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update && apt install -y \
     libnss3-dev libatk1.0-dev libatk-bridge2.0-dev libcups2-dev \
-    libdrm-dev libgtk-3-dev libasound2 python3 python3-pip
+    libdrm-dev libgtk-3-dev libasound2 python3 python3-pip \
+    cmake pkg-config
 
 RUN pip3 install selenium
 
 WORKDIR ./app
 COPY package.json ./app
+#RUN yarn install && \
+#    yarn add --dev electron-chromedriver@19.0.0 && \
+#    yarn add --dev selenium-webdriver
+
+COPY . .
+
+#RUN groupadd -g $GID -o $USER && \
+#    useradd -m -u $UID -g $GID -o -s /bin/bash $USER && \
+
+RUN chown -R $USER:$USER /app && \
+    chmod -R 755 /app && \
+    chown root:root node_modules/electron/dist/chrome-sandbox || true && \
+    chmod 4755 node_modules/electron/dist/chrome-sandbox || true
+
+
+USER $USER
+
+# Install only works here, why!?
 RUN yarn install && \
     yarn add --dev electron-chromedriver@19.0.0 && \
     yarn add --dev selenium-webdriver
 
-COPY . .
-#RUN groupadd -g $GID -o $USER && \
-#    useradd -m -u $UID -g $GID -o -s /bin/bash $USER && \
-RUN chown -R $USER:$USER /app && \
-    chmod 755 /app && \
-    chown root:root node_modules/electron/dist/chrome-sandbox && \
-    chmod 4755 node_modules/electron/dist/chrome-sandbox
-USER $USER
-
 EXPOSE 11938
 EXPOSE 51835
 
-RUN yarn package:linux_zip
 
+RUN yarn package:linux_zip
 
 CMD ./node_modules/.bin/chromedriver & python3 -u ./test/test.py --host=0.0.0.0

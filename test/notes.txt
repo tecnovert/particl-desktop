@@ -3,8 +3,10 @@ sudo systemctl restart systemd-networkd
 sudo systemctl start docker
 
 Onceoff:
+
     cd ~/tmp/work/particl/particl-desktop/test
-    docker compose build
+    rm -rf ../node_modules/
+    docker compose build --no-cache
 
     docker network create pdtest_network --subnet="172.16.238.0/24"
 

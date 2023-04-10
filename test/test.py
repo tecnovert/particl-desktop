@@ -50,11 +50,17 @@ def test_particldesktop():
 
     args = parser.parse_args()
 
+    options = webdriver.ChromeOptions()
+    options.binary_location = BINARY_PATH
+    options.add_argument('--no-sandbox')
+    options.add_argument('--remote-debugging-port=7070')
+    options.add_argument('--devtools')
+
     for i in range(10):
         try:
             remote_app = webdriver.remote.webdriver.WebDriver(
                 command_executor='http://localhost:9515',
-                desired_capabilities={'goog:chromeOptions': {'binary': BINARY_PATH, 'args': ['--no-sandbox', '--remote-debugging-port=7070', '--devtools']}},
+                options=options,
                 browser_profile=None,)
             break
         except Exception as e:
