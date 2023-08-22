@@ -7,6 +7,7 @@
 
 '''
 Notes
+ - Use with docker-compose.yml
  - Close any modals before rerunning
  - Killing the docker container is likely to lose the chain.
 
@@ -26,7 +27,7 @@ import subprocess
 import xmlrpc.client
 
 
-PARTICL_CLIDIR = os.path.expanduser(os.getenv('PARTICL_CLIDIR', '~/tmp/particl-23.0.3.0/bin/'))
+PARTICL_CLIDIR = os.path.expanduser(os.getenv('PARTICL_CLIDIR', '~/tmp/particl-23.1.5.0/bin/'))
 delay_event = threading.Event()
 
 
@@ -787,7 +788,7 @@ def main():
                         version='%(prog)s {version}'.format(version=__version__))
     parser.add_argument('--port', dest='port', help='RPC port (default=8001)', type=int, default=8001, required=False)
     parser.add_argument('--port2', dest='port2', help='RPC port (default=8002)', type=int, default=8002, required=False)
-    parser.add_argument('--delayafter', dest='delayafter', help='RPC port (default=0)', type=int, default=0, required=False)
+    parser.add_argument('--delayafter', dest='delayafter', help='Seconds to delay for once complete  (default=0)', type=int, default=0, required=False)
 
     args = parser.parse_args()
     server = xmlrpc.client.ServerProxy('http://localhost:{}'.format(args.port))
@@ -795,8 +796,7 @@ def main():
     server2 = xmlrpc.client.ServerProxy('http://localhost:{}'.format(args.port2))
 
     code = '''
-btn = self.remote_app.find_element(By.XPATH, "//h2[contains(text(),'Terms & Conditions')]")
-btn.click()
+heading = self.remote_app.find_element(By.XPATH, "//h2[contains(text(),'Terms & Conditions')]")
     '''
     try:
         server.run_exec(code)

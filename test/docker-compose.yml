@@ -61,6 +61,7 @@ services:
 
 networks:
     default:
+        external: true
         name: pdtest_network
 
 volumes:

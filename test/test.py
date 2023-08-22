@@ -60,8 +60,7 @@ def test_particldesktop():
         try:
             remote_app = webdriver.remote.webdriver.WebDriver(
                 command_executor='http://localhost:9515',
-                options=options,
-                browser_profile=None,)
+                options=options,)
             break
         except Exception as e:
             print('Error connecting to webdriver', e)
